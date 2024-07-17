@@ -1,0 +1,36 @@
+class Solution {
+    public int majorityElement(int[] nums) {
+        
+        int count = 0;
+        int possible_candidate = 0;
+
+
+        for(int num:nums){
+
+            if(count==0){
+                possible_candidate = num;
+                count = 1;
+            }
+            else if(num==possible_candidate){
+                count++;
+            }
+            else{
+                count--;
+            }
+        }
+        
+        int occurrences = 0;
+        return possible_candidate;
+        // for(int num:nums){
+
+        //     if(num==possible_candidate){
+        //         occurrences++;
+        //     }
+        // }
+
+        // if(occurrences>nums.length/2){
+        //     return possible_candidate;
+        // }
+        // return -1;
+    }
+}
