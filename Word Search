@@ -1,0 +1,51 @@
+class Solution {
+    public boolean exist(char[][] board, String word) {
+
+
+        int m = board.length;
+        int n = board[0].length;
+
+        char[]wordArray = word.toCharArray();
+
+
+        for(int i=0;i<m;i++){
+
+            for(int j=0;j<n;j++){
+
+               if(dfs(board,i,j,wordArray,0)){
+
+                   return true;
+               }
+            }
+        }
+
+        return false;
+    }
+
+    // helper
+    boolean dfs(char[][]board,int i,int j,char[]word,int k){
+
+        int m = board.length;
+        int n = board[0].length;
+
+        if (i < 0 || i >= m || j < 0 || j >= n || board[i][j] != word[k]) {
+            return false;
+        }
+        if (k == word.length - 1) {
+            return true; // The entire word is found
+        }
+
+        char temp = board[i][j];
+        board[i][j] = '/'; // Mark the current cell as visited
+
+        // Check the neighbors in all four directions
+        boolean found = dfs(board, i + 1, j, word, k + 1) ||
+                        dfs(board, i - 1, j, word, k + 1) ||
+                        dfs(board, i, j + 1, word, k + 1) ||
+                        dfs(board, i, j - 1, word, k + 1);
+
+        board[i][j] = temp; // Restore the cell
+
+        return found;
+    }
+}
