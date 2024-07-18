@@ -1,0 +1,45 @@
+static ArrayList<ArrayList<Integer>> uniquePerms(ArrayList<Integer> arr, int n) {
+        // code here
+        
+        // List to store all unique permutations
+        ArrayList<ArrayList<Integer>> list = new ArrayList<>();
+        
+        if(n == 0) {
+            return new ArrayList<>();
+        }
+        
+        // Sort the array to handle duplicates
+        Collections.sort(arr);
+        
+        // Function to generate permutations
+        backtrack(arr, new boolean[n], new ArrayList<>(), list);
+        
+        return list;
+    }
+    
+    static void backtrack(ArrayList<Integer> arr, boolean[] used, 
+                          ArrayList<Integer> current, ArrayList<ArrayList<Integer>> list) {
+        if(current.size() == arr.size()) {
+            // When a permutation is complete, add it to the list
+            list.add(new ArrayList<>(current));
+            return;
+        }
+        
+        for(int i = 0; i < arr.size(); i++) {
+            if(used[i] || (i > 0 && arr.get(i).equals(arr.get(i-1)) && !used[i-1])) {
+                // Skip used elements and duplicates
+                continue;
+            }
+            
+            // Mark the element as used
+            used[i] = true;
+            current.add(arr.get(i));
+            
+            // Recursive call
+            backtrack(arr, used, current, list);
+            
+            // Backtrack by unmarking the element and removing it from current permutation
+            used[i] = false;
+            current.remove(current.size() - 1);
+        }
+    }
