@@ -1,0 +1,56 @@
+class Solution {
+    public void gameOfLife(int[][] board) {
+        int rows = board.length;
+        int cols = board[0].length;
+
+        // Directions to check neighbors
+        int[][] directions = {
+            {-1, -1}, {-1, 0}, {-1, 1},
+            {0, -1}, {0, 1},
+            {1, -1}, {1, 0}, {1, 1}
+        };
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                int liveNeighbors = countNeighbours(board, i, j, directions);
+
+                if (board[i][j] == 1 && (liveNeighbors < 2 || liveNeighbors > 3)) {
+                    // Cell dies due to underpopulation or overpopulation
+                    board[i][j] = -1; // Mark as dead (going from 1 to 0)
+                } else if (board[i][j] == 0 && liveNeighbors == 3) {
+                    // Cell becomes alive due to reproduction
+                    board[i][j] = 2; // Mark as alive (going from 0 to 1)
+                }
+            }
+        }
+
+        // Update the board based on marked cells
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (board[i][j] == -1) {
+                    board[i][j] = 0; // Set dead cell
+                } else if (board[i][j] == 2) {
+                    board[i][j] = 1; // Set alive cell
+                }
+            }
+        }
+    }
+
+    private int countNeighbours(int[][] board, int x, int y, int[][] directions) {
+        int count = 0;
+        int rows = board.length;
+        int cols = board[0].length;
+
+        for (int[] dir : directions) {
+            int newX = x + dir[0];
+            int newY = y + dir[1];
+
+            if (newX >= 0 && newX < rows && newY >= 0 && newY < cols &&
+                (board[newX][newY] == 1 || board[newX][newY] == -1)) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+}
