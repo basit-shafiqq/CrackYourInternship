@@ -1,0 +1,20 @@
+class Solution {
+    public boolean validPalindrome(String s) {
+        return isValidPalindrome(s, 0, s.length() - 1, false);
+    }
+    
+    private boolean isValidPalindrome(String s, int left, int right, boolean deleted) {
+        while (left < right) {
+            if (s.charAt(left) != s.charAt(right)) {
+                if (deleted) {
+                    return false; // Already deleted a character, so it's not possible now
+                }
+                // Try deleting either character and continue checking
+                return isValidPalindrome(s, left + 1, right, true) || isValidPalindrome(s, left, right - 1, true);
+            }
+            left++;
+            right--;
+        }
+        return true; // It is a valid palindrome (or became one after one deletion)
+    }
+}
