@@ -1,0 +1,66 @@
+public class Solution {
+    public int largestRectangleArea(int[] heights) {
+        int n = heights.length;
+        List<Integer> prev = prevSmallestElement(heights);
+        List<Integer> next = nextSmallestElement(heights);
+
+        System.out.println(next);
+
+        System.out.println(prev);
+
+
+
+        int maxArea = 0;
+
+        for (int i = 0; i < n; i++) {
+            int height = heights[i];
+            int width = (next.get(i) - prev.get(i) - 1) * height;
+            maxArea = Math.max(maxArea, width);
+        }
+
+        return maxArea;
+    }
+
+    // Helper function to find the next smallest element for each element in the array
+    public List<Integer> nextSmallestElement(int[] arr) {
+        List<Integer> list = new ArrayList<>();
+        Stack<Integer> st = new Stack<>();
+        for (int i = arr.length - 1; i >= 0; i--) {
+            while (!st.isEmpty() && arr[st.peek()] >= arr[i]) {
+                st.pop();
+            }
+
+            if (st.isEmpty()) {
+                list.add(arr.length);
+            } else {
+                list.add(st.peek());
+            }
+
+            st.push(i);
+        }
+
+        Collections.reverse(list); // Reverse the list to get the correct order
+        return list;
+    }
+
+    // Helper function to find the previous smallest element for each element in the array
+    public List<Integer> prevSmallestElement(int[] arr) {
+        List<Integer> list = new ArrayList<>();
+        Stack<Integer> st = new Stack<>();
+
+        for (int i = 0; i < arr.length; i++) {
+            while (!st.isEmpty() && arr[st.peek()] >= arr[i]) {
+                st.pop();
+            }
+
+            if (st.isEmpty()) {
+                list.add(-1);
+            } else {
+                list.add(st.peek());
+            }
+            st.push(i);
+        }
+
+        return list;
+    }
+}
