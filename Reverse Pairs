@@ -1,0 +1,54 @@
+class Solution {
+    int count = 0;
+    
+    public int reversePairs(int[] nums) {
+        mergeSort(nums, 0, nums.length - 1);
+        return count;
+    }
+
+    public int[] mergeSort(int[] nums, int low, int high) {
+        if (low == high) {
+            return new int[]{nums[low]};
+        }
+
+        int mid = low + (high - low) / 2;
+        int[] left = mergeSort(nums, low, mid);
+        int[] right = mergeSort(nums, mid + 1, high);
+
+        // Count reverse pairs
+        int i = 0, j = 0;
+        while (i < left.length) {
+            while (j < right.length && (long)left[i] > 2 * (long)right[j]) {
+                j++;
+            }
+            count += j;
+            i++;
+        }
+
+        // Merge two sorted arrays
+        return merge(left, right);
+    }
+
+    public int[] merge(int[] left, int[] right) {
+        int[] merged = new int[left.length + right.length];
+        int i = 0, j = 0, k = 0;
+
+        while (i < left.length && j < right.length) {
+            if (left[i] <= right[j]) {
+                merged[k++] = left[i++];
+            } else {
+                merged[k++] = right[j++];
+            }
+        }
+
+        while (i < left.length) {
+            merged[k++] = left[i++];
+        }
+
+        while (j < right.length) {
+            merged[k++] = right[j++];
+        }
+
+        return merged;
+    }
+}
