@@ -1,0 +1,54 @@
+class Solution {
+    public void solve(char[][] board) {
+
+        int rows = board.length;
+        int cols = board[0].length;
+
+        // Start from first and last column, turn 'O' to '*'
+        for (int i = 0; i < rows; i++) {
+            if (board[i][0] == 'O') {
+                dfs(board, i, 0, rows, cols);
+            }
+            if (board[i][cols - 1] == 'O') {
+                dfs(board, i, cols - 1, rows, cols);
+            }
+        }
+
+        // Start from first and last row, turn 'O' to '*'
+        for (int i = 0; i < cols; i++) {
+            if (board[0][i] == 'O') {
+                dfs(board, 0, i, rows, cols);
+            }
+            if (board[rows - 1][i] == 'O') {
+                dfs(board, rows - 1, i, rows, cols);
+            }
+        }
+
+        // Post-processing, turn 'O' to 'X', '*' back to 'O', keep 'X' intact.
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (board[i][j] == 'O') {
+                    board[i][j] = 'X';
+                } else if (board[i][j] == '*') {
+                    board[i][j] = 'O';
+                }
+            }
+        }
+    }
+
+    // Helper
+    void dfs(char[][] board, int i, int j, int rows, int cols) {
+        if (i < 0 || i >= rows || j < 0 || j >= cols || board[i][j]!='O') {
+            return;
+        }
+
+        if (board[i][j] == 'O') {
+            board[i][j] = '*';
+            // Check the 4 directions
+            dfs(board, i - 1, j, rows, cols);
+            dfs(board, i + 1, j, rows, cols);
+            dfs(board, i, j - 1, rows, cols);
+            dfs(board, i, j + 1, rows, cols);
+        }
+    }
+}
