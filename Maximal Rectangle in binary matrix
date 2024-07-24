@@ -1,0 +1,83 @@
+import java.util.*;
+
+public class Solution {
+    public int maximalRectangle(char[][] matrix) {
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return 0;
+        }
+
+        int maxArea = 0;
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int[] heights = new int[n];
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                heights[j] = matrix[i][j] == '1' ? heights[j] + 1 : 0;
+            }
+            maxArea = Math.max(maxArea, largestRectangleArea(heights));
+        }
+
+        return maxArea;
+    }
+
+    // Helper function to find the largest rectangle area in a histogram
+    public int largestRectangleArea(int[] heights) {
+        int n = heights.length;
+        List<Integer> prev = prevSmallestElement(heights);
+        List<Integer> next = nextSmallestElement(heights);
+
+        int maxArea = 0;
+
+        for (int i = 0; i < n; i++) {
+            int height = heights[i];
+            int width = (next.get(i) - prev.get(i) - 1) * height;
+            maxArea = Math.max(maxArea, width);
+        }
+
+        return maxArea;
+    }
+
+    // Helper function to find the next smallest element for each element in the array
+    public List<Integer> nextSmallestElement(int[] arr) {
+        List<Integer> list = new ArrayList<>();
+        Stack<Integer> st = new Stack<>();
+        for (int i = arr.length - 1; i >= 0; i--) {
+            while (!st.isEmpty() && arr[st.peek()] >= arr[i]) {
+                st.pop();
+            }
+
+            if (st.isEmpty()) {
+                list.add(arr.length);
+            } else {
+                list.add(st.peek());
+            }
+
+            st.push(i);
+        }
+
+        Collections.reverse(list);
+        return list;
+    }
+
+    // Helper function to find the previous smallest element for each element in the array
+    public List<Integer> prevSmallestElement(int[] arr) {
+        List<Integer> list = new ArrayList<>();
+        Stack<Integer> st = new Stack<>();
+
+        for (int i = 0; i < arr.length; i++) {
+            while (!st.isEmpty() && arr[st.peek()] >= arr[i]) {
+                st.pop();
+            }
+
+            if (st.isEmpty()) {
+                list.add(-1);
+            } else {
+                list.add(st.peek());
+            }
+            st.push(i);
+        }
+
+        return list;
+    }
+}
