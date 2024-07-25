@@ -1,0 +1,19 @@
+ public static Node removeNodes(Node head, int k) {
+        // Write your code here.
+
+        Node dummy = new Node(0);
+        dummy.next = head;
+        Node current = dummy;
+
+        // Iterate through the list
+        while (current.next != null) {
+            if (current.next.data == k) {
+                current.next = current.next.next; // Remove the node with value k
+            } else {
+                current = current.next; // Move to the next node
+            }
+        }
+
+        // Return the new head of the list
+        return dummy.next;
+    }
