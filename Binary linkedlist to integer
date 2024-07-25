@@ -1,0 +1,16 @@
+
+    public static int binaryToInteger(int n, Node head) {
+        // Write your code here.
+
+        int result = 0;
+        Node current = head;
+        
+        while (current != null) {
+            result = (result << 1) | current.data;
+            current = current.next;
+        }
+        
+        return result;
+
+
+    }
