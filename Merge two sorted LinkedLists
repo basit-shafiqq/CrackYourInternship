@@ -1,0 +1,31 @@
+ LinkedListNode<Integer> dummy = new LinkedListNode<>(0);
+        LinkedListNode<Integer> tail = dummy;
+
+        // Use two pointers to traverse the two lists
+        LinkedListNode<Integer> p = first;
+        LinkedListNode<Integer> q = second;
+
+        // Traverse both lists and append the smaller node to the merged list
+        while (p != null && q != null) {
+            if (p.data <= q.data) {
+                tail.next = p;
+                p = p.next;
+            } else {
+                tail.next = q;
+                q = q.next;
+            }
+            tail = tail.next;
+        }
+
+        // Append any remaining nodes from the first list
+        if (p != null) {
+            tail.next = p;
+        }
+
+        // Append any remaining nodes from the second list
+        if (q != null) {
+            tail.next = q;
+        }
+
+        // Return the merged list, starting from the first real node (skipping the dummy)
+        return dummy.next;
