@@ -1,0 +1,19 @@
+class Solution {
+    public long multiplyTwoLists(Node first, Node second) {
+        // Convert first linked list to an integer
+        long num1 = convertToNumber(first);
+        // Convert second linked list to an integer
+        long num2 = convertToNumber(second);
+        // Multiply the two numbers
+        return num1 * num2;
+    }
+
+    private long convertToNumber(Node head) {
+        long number = 0;
+        while (head != null) {
+            number = number * 10 + head.data;
+            head = head.next;
+        }
+        return number;
+    }
+}
