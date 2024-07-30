@@ -1,0 +1,35 @@
+class BSTIterator {
+    private Stack<TreeNode> stack;
+
+    public BSTIterator(TreeNode root) {
+        stack = new Stack<>();
+        // Traverse to the leftmost node to initialize the stack
+        pushAllLeft(root);
+    }
+
+    public int next() {
+        // The next method should return the next smallest number
+        TreeNode node = stack.pop();
+        // If the node has a right child, push all its left children onto the stack
+        pushAllLeft(node.right);
+        return node.val;
+    }
+
+    public boolean hasNext() {
+        // The hasNext method should return true if there are more elements to traverse
+        return !stack.isEmpty();
+    }
+
+    // Helper method to push all left children of a node onto the stack
+    private void pushAllLeft(TreeNode node) {
+        while (node != null) {
+            stack.push(node);
+            node = node.left;
+        }
+    }
+}
+
+// Your BSTIterator object will be instantiated and called as such:
+// BSTIterator obj = new BSTIterator(root);
+// int param_1 = obj.next();
+// boolean param_2 = obj.hasNext();
