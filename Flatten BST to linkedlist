@@ -1,0 +1,26 @@
+class Solution {
+    public void flatten(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+
+        // Flatten the left and right subtrees
+        flatten(root.left);
+        flatten(root.right);
+
+        // Save the right subtree
+        TreeNode tempRight = root.right;
+
+        // Connect the flattened left subtree to the right of the root
+        root.right = root.left;
+        root.left = null;
+
+        // Move to the end of the current flattened subtree
+        while (root.right != null) {
+            root = root.right;
+        }
+
+        // Connect the saved right subtree to the rightmost node
+        root.right = tempRight;
+    }
+}
