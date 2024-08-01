@@ -1,0 +1,51 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    private TreeNode firstElement = null;
+    private TreeNode secondElement = null;
+    private TreeNode prevElement = new TreeNode(Integer.MIN_VALUE);
+
+    public void recoverTree(TreeNode root) {
+        traverse(root);
+        
+        // Swap the values of the first and second elements
+        int temp = firstElement.val;
+        firstElement.val = secondElement.val;
+        secondElement.val = temp;
+    }
+
+    private void traverse(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+
+        traverse(root.left);
+
+        // If first element has not been found, assign it to prevElement (node smaller than current node)
+        if (firstElement == null && prevElement.val >= root.val) {
+            firstElement = prevElement;
+        }
+        
+        // If first element is found, assign the second element to the root (current node)
+        if (firstElement != null && prevElement.val >= root.val) {
+            secondElement = root;
+        }
+        
+        prevElement = root;
+
+        traverse(root.right);
+    }
+}
